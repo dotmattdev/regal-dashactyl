@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title><%= extra.dashboard.title %></title>
+        <% if (settings.api.arcio.enabled == true) { %>
+            <script async src="https://arc.io/widget.min.js#<%= settings.api.arcio.widgetid %>"></script>
+        <% } %>
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/feather/feather.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/base/vendor.bundle.base.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/flag-icon-css/css/flag-icon.min.css"/>
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/jquery-bar-rating/fontawesome-stars-o.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/vendors/jquery-bar-rating/fontawesome-stars.css">
+  <link rel="stylesheet" href="/assets/<%= theme %>/css/style.css">
+  <link rel="shortcut icon" href="/assets/<%= theme %>/images/favicon.png" />
+
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center bg-dark">
+        <a class="navbar-brand brand-logo text-white" href="/dashboard">SwayDev</a>
+        <a class="navbar-brand brand-logo-mini text-white" href="/dashboard">S</a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="icon-menu"></span>
+        </button>
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item dropdown d-lg-flex d-none">
+                <a class="btn btn-info font-weight-bold" href="/create">+ Create server</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown d-lg-flex d-none">
+              <a class="btn btn-light font-weight-bold btn-block btn-xs" href="/logout">Log Out</a>
+          </li>
+      </ul>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas bg-dark" id="sidebar">
+        <div class="user-profile">
+          <div class="user-image">
+            <img id="pfp2" src="https://discord.com/assets/2d20a45d79110dc5bf947137e9d99b66.svg">
+          </div>
+          <div class="user-name">
+              <span><%= userinfo.username %></span>
+          </div>
+          <div class="user-designation">
+            <% if(pterodactyl.root_admin == true) { %>
+              <span>Admin</span><badge class="fa fa-admin"></badge>
+            <% } %>
+            <% } else { %>
+            <% if(pterodactyl.root_admin == false) { %>
+              <span>Customer</span><badge class="fa fa-user"></badge>
+            <% } %>
+          </div>
+        </div>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+              <i class="fa fa-dashboard menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">
+              <i class="fa fa-server menu-icon"></i>
+              <span class="menu-title">Create</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">
+              <i class="fa fa-shopping-cart menu-icon"></i>
+              <span class="menu-title">Shop</span>
+            </a>
+          </li>
+          <% if(pterodactyl.root_admin == true) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">
+              <i class="fa fa-lock menu-icon"></i>
+              <span class="menu-title">Admin</span>
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </nav>
+      <%
+      let ram = 0;
+      let disk = 0;
+      let cpu = 0;
+      let servers = pterodactyl.relationships.servers.data.length;
+      for (let i = 0, len = pterodactyl.relationships.servers.data.length; i < len; i++) {
+          ram = ram + (typeof pterodactyl.relationships.servers.data[i].attributes.limits.memory == "number" ? pterodactyl.relationships.servers.data[i].attributes.limits.memory : 0);
+          disk = disk + (typeof pterodactyl.relationships.servers.data[i].attributes.limits.disk == "number" ? pterodactyl.relationships.servers.data[i].attributes.limits.disk : 0);
+          cpu = cpu + (typeof pterodactyl.relationships.servers.data[i].attributes.limits.cpu == "number" ? pterodactyl.relationships.servers.data[i].attributes.limits.cpu : 0);
+      }
+  %>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+          </div>
+          <div class="row mt-3">
+            <div class="col-xl-3 flex-column d-flex grid-margin stretch-card">
+              <div class="row flex-grow">
+                <div class="col-sm-12 grid-margin">
+                    <div class="card">
+                      <div class="card-body text-center">
+                          <h1 class="card-title h1">Memory</h1>
+                          <div class="card-text">4000MB / 4000MB</div>
+                      </div>
+                       <div class="card-body text-center">
+                          <h1 class="card-title h1">Disk</h1>
+                          <div class="card-text">4000MB / 4000MB</div>
+                      </div>
+                      <div class="card-body text-center">
+                        <h1 class="card-title h1">CPU</h1>
+                        <div class="card-text">100% / 100%</div>
+                    </div>
+                    <div class="card-body text-center">
+                      <h1 class="card-title h1">Servers</h1>
+                      <div class="card-text">1 server / 2 servers</div>
+                  </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Modify your Server</h4>
+                  <% if (req.query.err) { %>
+                    <div class="alert alert-success">
+                        <span class="closebtn">&times;</span>
+                        <% if (req.query.err == "MISSINGVARIABLE") { %>
+                            You have not filled out all of the server information.
+                        <% } else if (req.query.err == "ERRORONMODIFY") { %>
+                            There has been an error while attempting to modifying your server. Please alert an administrator to fix this problem.
+                        <% } else if (req.query.err == "MISSINGEGG") { %>
+                            The server type for this server is not registered as a valid server type, therefore your server's RAM, disk and/or CPU could not be changed.
+                        <% } else { %>
+                            <% if (req.query.num) { %>
+                                <% if (!isNaN(parseFloat(req.query.num))) { %>
+                                    <% if (req.query.err == "TOOLITTLERAM" || req.query.err == "TOOLITTLEDISK" || req.query.err == "TOOLITTLECPU") { %>
+                                        You must make a server with at least <b><%= req.query.num %></b>
+                                        <% if (req.query.err.slice(-3) == "RAM") { %>
+                                            MB RAM
+                                        <% } else if (req.query.err.slice(-4) == "DISK") { %>
+                                            MB disk
+                                        <% } else { // CPU %>
+                                            % CPU
+                                        <% } %>
+                                        if you want to modified a server with the server type you have selected.
+                                    <% } else if (req.query.err == "TOOMUCHRAM" || req.query.err == "TOOMUCHDISK" || req.query.err == "TOOMUCHCPU") { %>
+                                        With the selected server type, you can have a maximum of <b><%= req.query.num %></b>
+                                        <% if (req.query.err.slice(-3) == "RAM") { %>
+                                            MB RAM
+                                        <% } else if (req.query.err.slice(-4) == "DISK") { %>
+                                            MB disk
+                                        <% } else { // CPU %>
+                                            % CPU
+                                        <% } %>
+                                        on the server.
+                                    <% } else if (req.query.err == "EXCEEDRAM" || req.query.err == "EXCEEDDISK" || req.query.err == "EXCEEDCPU") { %>
+                                        The server could not be modified because you have requested to modified a server that exceeds your plan.
+                                    <% } else { %>
+                                        I won't mind to add a little easter egg here. :)
+                                    <% } %>
+                                <% } else { %>
+                                    I won't mind to add a little easter egg here. :)
+                                <% } %>
+                            <% } else { %>
+                                I won't mind to add a little easter egg here. :)
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <script>
+                        let close = document.getElementsByClassName("closebtn");
+                        let i;
+                
+                        for (i = 0; i < close.length; i++) {
+                            close[i].onclick = function() {
+                                var div = this.parentElement;
+                                div.style.opacity = "0";
+                                setTimeout(
+                                    function () {
+                                        div.style.display = "none";
+                                    },
+                                600);
+                            }
+                        }
+                    </script>
+                <% } %>
+                <% if (req.query.id) { %>
+                    <% if (pterodactyl.relationships.servers.data.filter(name => name.attributes.id == req.query.id).length == 1) {
+                        let serverinfo = pterodactyl.relationships.servers.data.filter(name => name.attributes.id == req.query.id)[0];
+                        let attemptegg = null;
+                        let attemptname = null;
+                        for (let [name, value] of Object.entries(settings.api.client.eggs)) {
+                            if (settings.api.client.eggs[name].info.egg == serverinfo.attributes.egg) {
+                                attemptegg = settings.api.client.eggs[name];
+                                attemptname = name;
+                            };
+                        };
+                        let egginfo = attemptegg ? attemptegg.display : "???";
+                    %>
+                  <form class="forms-sample">
+                    <div class="form-group">
+                      <label for="server_name">Server Name</label>
+                      <input type="text" class="form-control" type="text" id="server_name" disabled value="<%= serverinfo.attributes.name %>">
+                    </div>
+                    <div class="form-group">
+                      <label for="memory">Memory</label>
+                      <input type="text" class="form-control" id="ram" type="number" value="<%= serverinfo.attributes.limits.memory %>">
+                    </div>
+                    <div class="form-group">
+                      <label for="disk">Disk</label>
+                      <input type="text" class="form-control" id="disk" type="number" value="<%= serverinfo.attributes.limits.disk %>">
+                    </div>
+                    <div class="form-group">
+                      <label for="cpu">CPU</label>
+                      <input class="form-control" id="cpu" type="number" value="<%= serverinfo.attributes.limits.cpu %>">
+                    </div>
+                    <button type="button" onclick="submitForm();" class="btn btn-dark mr-2">Modify</button>
+                  </form>
+                  <% } else { %>
+                    <p style="margin-left: 5%;">Could not find server with the provided ID.</p>
+                <% } %>
+            <% } else { %>
+                <p style="margin-left: 5%;">Missing server ID.</p>
+            <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2020-2021 <a href="https://bootstrapdash.com">BootstrapDash</a> and <a href="https://github.com/dotmattdev/regal-dashactyl">mattt#6969</a></span>
+          </div>
+        </footer>
+        <script>
+          async function submitForm() {
+              let ram = encodeURIComponent(document.getElementById("ram").value);
+              let disk = encodeURIComponent(document.getElementById("disk").value);
+              let cpu = encodeURIComponent(document.getElementById("cpu").value);
+              document.location.href = `/modify?id=<%= req.query.id %>&ram=${ram}&disk=${disk}&cpu=${cpu}`;
+          };
+      </script>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- base:js -->
+  <script src="/assets/<%= theme %>/vendors/base/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="/assets/<%= theme %>/js/off-canvas.js"></script>
+  <script src="/assets/<%= theme %>/js/hoverable-collapse.js"></script>
+  <script src="/assets/<%= theme %>/js/template.js"></script>
+  <!-- endinject -->
+  <!-- plugin js for this page -->
+  <script src="/assets/<%= theme %>/vendors/chart.js/Chart.min.js"></script>
+  <script src="/assets/<%= theme %>/vendors/jquery-bar-rating/jquery.barrating.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- Custom js for this page-->
+  <script src="/assets/<%= theme %>/js/dashboard.js"></script>
+  <!-- End custom js for this page-->
+  <% if(userinfo.avatar !== null) { %>
+    <script>
+        document.getElementById('pfp').src = "https://cdn.discordapp.com/avatars/<%= userinfo.id %>/<%= userinfo.avatar %>.png"; 
+        document.getElementById('pfp2').src = "https://cdn.discordapp.com/avatars/<%= userinfo.id %>/<%= userinfo.avatar %>.png";
+    </script>
+<% } %>
+</body>
+
+</html>
+
