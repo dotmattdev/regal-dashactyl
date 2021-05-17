@@ -6,7 +6,7 @@ This theme is managed and supported by Sway Services (https://invite.swaydev.xyz
 
 This theme was entirely made by Matt (mattt#6969) on Discord. 
 
-# Installation
+## Installation
 
 Installing this theme is very simple!
 
