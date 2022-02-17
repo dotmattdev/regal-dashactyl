@@ -1,4 +1,4 @@
-# Regal Theme for Dashactyl
+# Regal Theme for Dashactyl | works only for dashactyl 0.4
 Free Dashactyl Theme built on the Regal Admin UI and Bootstrap. 
 
 ## Author
